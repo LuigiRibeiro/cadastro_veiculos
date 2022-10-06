@@ -1,0 +1,183 @@
+<div class="main-content" style="margin-top: 20px;">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+          <div class="card card-stats">
+              <div class="card-header card-header-gray card-header-icon">
+                  <div class="card-icon">
+                      <i class="material-icons">directions_car</i>
+                  </div>
+                  <h2 class="card-title">{{veiculos.length}}</h2>
+              </div>
+              <div class="card-footer" style="justify-content: end;">
+                <div class="stats">
+                  Total de veículos
+                </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-gray card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">attach_money</i>
+                </div>
+                <h2 class="card-title">{{getVeiculosNaoVendidos()}}</h2>
+            </div>
+            <div class="card-footer" style="justify-content: end;">
+              <div class="stats">
+                Veículos não vendidos
+            </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-gray card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">date_range</i>
+                </div>
+                <h2 class="card-title">{{getVeiculosRegistradosSemana()}}</h2>
+            </div>
+            <div class="card-footer" style="justify-content: end;">
+              <div class="stats">
+                Veículos registrados essa semana
+            </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-gray card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">today</i>
+                </div>
+                <h2 class="card-title">{{getVeiculosRegistradosDia()}}</h2>
+            </div>
+            <div class="card-footer" style="justify-content: end;">
+              <div class="stats">
+                Veículos registrados hoje
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-chart">
+            <div class="card-header card-header-gray">
+                <div class="ct-chart" style="height: 270px; margin-top: 20px;" id="marcasViewsChart"></div>
+            </div>
+            <div class="card-footer" style="justify-content: end;">
+                <div class="stats">
+                    Veículos por marca
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-chart">
+            <div class="card-header card-header-gray">
+                <div class="ct-chart" style="height: 270px; margin-top: 20px;" id="anoViewsChart"></div>
+            </div>
+            <div class="card-footer" style="justify-content: end;">
+                <div class="stats">
+                    Veículos por década
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="card-header card-header-gray">
+                  <h4 class="card-title ">Veículos</h4>
+                  <p class="card-category">Sistema para gerenciamento do banco de dados dos veículos.</p>
+              </div>
+              <div class="card-body" style="padding: 40px;">
+                <button mat-raised-button style="min-width: 15%; margin-top: 20px; float: right;" class="btn btn-ciano pull-right"
+                  (click)="novoVeiculo()">Novo veículo</button>
+                <app-tabela *ngIf="monstrarTabela"[nomeTabela]="'tabelaVeiculos'" [displayedColumns]="['id', 'veiculo', 'marca', 'cor', 'ano', 'vendido', 'acoes']"
+                [listaDocumentos]="veiculos" [eventoDeletar]="'deletar-veiculo'"
+                [eventoVizualizar]="'editar-veiculo'"></app-tabela> 
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+
+<div id="modalVeiculos" class="modal" style="display: none;">
+  <!-- Modal content -->
+  <div class="modal-content">
+      <div class="modal-header" id="header">
+          <h2 class="h2-header-text">Veículo</h2>
+          <span class="span-header-text">Inserir & Editar</span>
+      </div>
+      <div class="modal-body" id="body" style="margin: 20px">
+        <form [formGroup]="veiculoForm">
+          <div class="row">
+              <div class="col-6">
+                <mat-form-field class="example-full-width" floatLabel="always" appearance="outline">
+                  <mat-label>Veículo (modelo)</mat-label> 
+                  <input matInput formControlName="veiculo" required>
+                </mat-form-field>
+              </div>
+              <div class="col-6">
+                <mat-form-field class="example-full-width" floatLabel="always" appearance="outline">
+                  <mat-label>Marca</mat-label>
+                  <mat-select matInput formControlName="marca" required>
+                    <mat-option *ngFor="let lista of listaMarcas" [value]="lista">
+                      {{lista}}
+                    </mat-option>
+                    <mat-option hidden></mat-option>
+                </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-4">
+                <mat-form-field class="example-full-width" floatLabel="always" appearance="outline">
+                  <mat-label>Ano</mat-label> 
+                  <input matInput type="number" min="1900" max="2022" step="1" formControlName="ano" required/>
+                </mat-form-field>
+              </div>
+              <div class="col-4">
+                <mat-form-field class="example-full-width" floatLabel="always" appearance="outline">
+                  <mat-label>Cor</mat-label>
+                  <mat-select matInput formControlName="cor" required>
+                    <mat-option *ngFor="let lista of listaCores" [value]="lista">
+                      {{lista}}
+                    </mat-option>
+                    <mat-option hidden></mat-option>
+                </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-4">
+                <mat-form-field class="example-full-width" floatLabel="always" appearance="outline">
+                  <mat-label>Vendido</mat-label>
+                  <mat-select matInput formControlName="vendido">
+                    <mat-option [value]="true">Sim</mat-option>
+                    <mat-option [value]="false">Não</mat-option>
+                </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12">
+                <mat-form-field class="example-full-width" floatLabel="always" appearance="outline">
+                  <mat-label>Descrição</mat-label>
+                  <textarea #descricao style="min-height: 100px !important;" matInput maxlength="1000"
+                  formControlName="descricao"></textarea>
+                  <mat-hint align="end">{{descricao.value.length}} / 1000</mat-hint>
+                </mat-form-field>
+              </div>
+          </div> 
+        </form>
+      </div>
+      <div class="modal-footer" id="footer">
+        <button mat-raised-button style="min-width: 15%;" class="btn btn-vermelho pull-right" (click)='closeModal("modalVeiculos")'>
+          Fechar</button>
+        <button mat-raised-button style="min-width: 15%;" class="btn btn-ciano pull-right" (click)="salvarVeiculo()">
+          Salvar</button>
+      </div>
+  </div>
+</div>

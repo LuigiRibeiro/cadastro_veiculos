@@ -1,0 +1,43 @@
+.card-stats:hover > .card-header-gray .card-icon {
+    background: linear-gradient(60deg, #00e7c1, #00a589);
+}
+
+.card-stats:hover > .card-footer .stats {
+    font-weight: bold;
+}
+
+.infoUser{
+    box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%);
+    border-radius: 6px;
+    background: linear-gradient(60deg, #3f3f3f, #181818);
+    color: #999999;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+
+    .label-info{
+        font-size: 12px;
+        color: #fff;
+    }
+
+    .num-info{
+        font-weight: bold;
+        color: #fff;
+    }
+}
+
+::ng-deep svg.ct-chart-bar, svg.ct-chart-line{
+    overflow: visible;
+}
+
+::ng-deep svg.ct-chart-bar{
+    height: 220px !important;
+}
+
+::ng-deep .ct-label.ct-label.ct-horizontal.ct-end {
+  position: relative;
+  justify-content: flex-end;
+  text-align: right;
+  transform-origin: 100% 0;
+  transform: translate(-100%) rotate(-45deg);
+  white-space:nowrap;
+}
