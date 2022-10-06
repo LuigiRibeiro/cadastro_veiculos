@@ -13,9 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf.urls import url
+from django.views.generic.base import TemplateView
+from django.views.static import serve
+from cadastro_veiculos import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    path("", include("veiculos.urls")),
+    url(r'^.*', TemplateView.as_view(template_name="app.html"), name="app")
 ]
